@@ -101,3 +101,31 @@ footer {
     transform: scale(0.8);
     animation: fadeInUp 0.5s ease forwards;
 }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.movie {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+}
+
+.movie img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.movie h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.movie p {
+    font-size: 0.9rem;
+    color: #555;
+}
