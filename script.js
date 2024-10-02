@@ -72,3 +72,40 @@ function displayMovies(movies, containerId) {
         container.appendChild(movieElement);
     });
 }
+// Fetch video details for a specific movie
+function fetchMovieVideos(movieId) {
+    const url = `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const video = data.results[0]; // Get the first video
+            if (video) {
+                const videoUrl = `https://www.youtube.com/watch?v=${video.key}`; // Get the video URL
+                playVideo(video.key); // Play the video on the site
+            } else {
+                alert("No video found for this movie.");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching movie videos:', error);
+        });
+}
+
+// Function to embed the video in a modal
+function playVideo(videoKey) {
+    const videoContainer = document.getElementById('video-player');
+    const videoElement = document.getElementById('video-player-video');
+
+    videoElement.src = `https://www.youtube.com/embed/${videoKey}`; // Embed YouTube video
+    videoContainer.style.display = 'block'; // Show the video player
+}
+
+// Close the video player
+function closeVideo() {
+    const videoContainer = document.getElementById('video-player');
+    const videoElement = document.getElementById('video-player-video');
+
+    videoElement.src = ''; // Stop the video
+    videoContainer.style.display = 'none'; // Hide the video player
+}
