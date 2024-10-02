@@ -4,8 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Shelter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Movie Shelter</h1>
+        <nav>
+            <ul>
+                <li><a href="#new-videos">New Videos</a></li>
+                <li><a href="#old-videos">Old Videos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="search">
+        <input type="text" id="searchBar" placeholder="Search for a video..." autocomplete="off">
+        <div id="suggestions" class="autocomplete-list"></div>
+        <button id="searchBtn">Search</button>
+    </section>
     
+    <section id="video-list">
+        <h2 id="new-videos">New Videos</h2>
+        <div class="video-container" id="new-video-container"></div>
+
+        <h2 id="old-videos">Old Videos</h2>
+        <div class="video-container" id="old-video-container"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Presidential Archive</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
