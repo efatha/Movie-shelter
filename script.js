@@ -109,3 +109,62 @@ function closeVideo() {
     videoElement.src = ''; // Stop the video
     videoContainer.style.display = 'none'; // Hide the video player
 }
+// Call fetchMovies to load API videos on page load
+document.addEventListener("DOMContentLoaded", fetchMovies);
+
+// Search functionality
+document.getElementById('searchBtn').addEventListener('click', () => {
+    const query = document.getElementById('searchBar').value.toLowerCase();
+    searchMovies(query);
+});
+
+// Search movies by title using the TMDb API
+function searchMovies(query) {
+    const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=en-US&page=1`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            displayMovies(data.results, 'new-video-container');
+        })
+        .catch(error => {
+            console.error('Error searching movie data:', error);
+        });
+}
+
+// Autocomplete suggestions
+const suggestionsBox = document.getElementById('suggestions');
+const searchBar = document.getElementById('searchBar');
+const videos = [...newVideos, ...oldVideos];
+
+searchBar.addEventListener('input', function () {
+    const query = searchBar.value.toLowerCase();
+    suggestionsBox.innerHTML = '';
+    const suggestions = videos.filter(video => video.title.toLowerCase().includes(query));
+
+    if (suggestions.length) {
+        suggestionsBox.style.display = 'block';
+        suggestions.forEach(suggestion => {
+            const div = document.createElement('div');
+            div.textContent = suggestion.title;
+            div.addEventListener('click', function () {
+                searchBar.value = suggestion.title;
+                suggestionsBox.style.display = 'none';
+                searchMovies(suggestion.title); // Trigger search on click
+            });
+            suggestionsBox.appendChild(div);
+        });
+    } else {
+        suggestionsBox.style.display = 'none';
+    }
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener('click', function (e) {
+    if (!suggestionsBox.contains(e.target)) {
+        suggestionsBox.style.display = 'none';
+    }
+});
+
+// Close the video player when clicking outside of it
+document.getElementById('video-player').addEventListener('click', closeVideo);
