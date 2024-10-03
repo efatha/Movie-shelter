@@ -168,3 +168,4 @@ document.addEventListener('click', function (e) {
 
 // Close the video player when clicking outside of it
 document.getElementById('video-player').addEventListener('click', closeVideo);
+
