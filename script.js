@@ -1,12 +1,11 @@
 // Mock data to represent videos
 const newVideos = [
     { title: "Sample Video", url: "https://www.w3schools.com/html/mov_bbb.mp4" },
-    // Add more sample videos if necessary
+    // Other new videos if necessary
 ];
 
 const oldVideos = [
-    { title: "Old Victory Speech", url: "video3.mp4" },
-    { title: "Old Parliament Address", url: "video4.mp4" },
+    { title: "Old Sample Speech", url: "https://www.w3schools.com/html/movie.mp4" }, // Added sample video to old videos
 ];
 
 // Load mock videos on page load
@@ -43,6 +42,51 @@ function fetchMovies() {
             console.error('Error fetching movie data:', error);
         });
 }
+// Fetch old movies from the TMDb API
+function fetchOldMovies() {
+    const url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&primary_release_date.lte=2000-01-01&language=en-US&page=1`; // Adjust date to get old movies
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            displayOldMovies(data.results.slice(0, 10), 'old-video-container'); // Get the first 10 old movies
+        })
+        .catch(error => {
+            console.error('Error fetching old movie data:', error);
+        });
+}
+
+// Function to display old movies
+function displayOldMovies(movies, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ''; // Clear previous content
+
+    movies.forEach(movie => {
+        const movieElement = document.createElement('div');
+        movieElement.classList.add('movie');
+
+        // Create a clickable image that plays the video when clicked
+        const movieImage = document.createElement('img');
+        movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+        movieImage.alt = movie.title;
+        movieImage.style.cursor = 'pointer'; // Change cursor to pointer
+
+        // Add click event to play the video
+        movieImage.addEventListener('click', () => {
+            fetchMovieVideos(movie.id); // Fetch video details for the clicked movie
+        });
+
+        movieElement.innerHTML = `
+            <h3>${movie.title}</h3>
+            <p>Release Date: ${movie.release_date}</p>
+        `;
+        movieElement.prepend(movieImage); // Add image to the front
+        container.appendChild(movieElement);
+    });
+}
+
+// Call fetchOldMovies to load old films on page load
+document.addEventListener("DOMContentLoaded", fetchOldMovies);
 
 // Function to display movies from the TMDb API
 function displayMovies(movies, containerId) {
@@ -72,6 +116,7 @@ function displayMovies(movies, containerId) {
         container.appendChild(movieElement);
     });
 }
+
 // Fetch video details for a specific movie
 function fetchMovieVideos(movieId) {
     const url = `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`;
@@ -109,6 +154,7 @@ function closeVideo() {
     videoElement.src = ''; // Stop the video
     videoContainer.style.display = 'none'; // Hide the video player
 }
+
 // Call fetchMovies to load API videos on page load
 document.addEventListener("DOMContentLoaded", fetchMovies);
 
@@ -168,4 +214,3 @@ document.addEventListener('click', function (e) {
 
 // Close the video player when clicking outside of it
 document.getElementById('video-player').addEventListener('click', closeVideo);
-
