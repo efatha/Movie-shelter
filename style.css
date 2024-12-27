@@ -148,3 +148,8 @@ body {
     transform: scale(1.05);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
 }
+.attribution { 
+    font-size: 11px; text-align: center;
+    padding-top: 20px;
+}
+    .attribution a { color:#89b6e3; }
